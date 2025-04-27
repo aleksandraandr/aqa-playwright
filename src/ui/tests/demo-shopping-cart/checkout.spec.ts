@@ -1,6 +1,7 @@
 import { test, expect, Page } from '@playwright/test';
+import type { Product } from 'types/demo-shopping-card/product-types';
 import { productsToAdd } from 'data/demo-shopping-cart/products';
-import { promoCodes } from 'data/demo-shopping-cart/promocodes';
+import { promoCodes, promoCodeDiscountMap } from 'data/demo-shopping-cart/promocodes';
 
 test.describe('[DDT] [Demo-shopping-cart] [E2E]', () => {
   test('Checkout with multiple products and promo codes', async ({ page }) => {
@@ -24,10 +25,11 @@ test.describe('[DDT] [Demo-shopping-cart] [E2E]', () => {
 
     // 5. Wait for the cart items to be visible
     const cartItemLocator = page.locator('h5.my-0.fw-bold');
-    await expect(cartItemLocator.first()).toBeVisible();
+    const allItems = await cartItemLocator.all();
+    await Promise.all(allItems.map(item => expect(item).toBeVisible()));
 
     // 6. Validate the total price
-    await expect(page.locator('#total-price')).toHaveText(`$${expectedTotal}.00`);
+    await expect(page.locator('#total-price')).toHaveText(formatPrice(expectedTotal));
 
     // 7. Validate the list of products in the cart
     const titlesInCart = await cartItemLocator.allTextContents();
@@ -48,15 +50,17 @@ test.describe('[DDT] [Demo-shopping-cart] [E2E]', () => {
     console.log(`Apply promo code: ${code}`);
     await promoInput.fill(code);
     await redeemButton.click();
-    await page.waitForTimeout(500); // let the page recalculate
+    
+    const spinner = page.locator('.spinner-border');
+    await expect(spinner).toBeHidden({ timeout: 7000 });
     }
 
     // 9. Validate the final price after discounts
     const totalText = await page.locator('#total-price').innerText(); // "$1412.50 (-$4237.5)"
     const [finalTotalString] = totalText.split(' '); // "$1412.50"
     const finalPrice = parseFloat(finalTotalString.replace('$', ''));
-
-    expect(finalPrice).toBeLessThan(expectedTotal);
+    const expectedFinalPrice = calculateFinalPrice(productsToAdd, promoCodes, promoCodeDiscountMap);
+    expect(finalPrice).toBe(expectedFinalPrice);
 
     // 10. Proceed to checkout
     await page.click('#continue-to-checkout-button');
@@ -64,7 +68,7 @@ test.describe('[DDT] [Demo-shopping-cart] [E2E]', () => {
     // 11. Validate the final order total on the confirmation page
     const orderTotalText = await page.locator('.text-muted').last().innerText();
     const orderTotal = parseFloat(orderTotalText.replace('$', ''));
-    expect(orderTotal).toBe(finalPrice)
+    expect(orderTotal).toBe(expectedFinalPrice);
   });
 });
 
@@ -93,3 +97,13 @@ async function getProductPrice(productName: string, page: Page): Promise<number>
   return +priceText.replace('$', '');
 }
 
+function formatPrice(amount: number): string {
+  return `$${amount.toFixed(2)}`;
+}
+
+function calculateFinalPrice(products: Product[], codes: string[], discounts: Record<string, number>): number {
+  const total = products.reduce((sum, product) => sum + product.price, 0);
+  const totalDiscountPercent = codes.reduce((sum, code) => sum + (discounts[code] || 0), 0);
+  const final = total * (1 - totalDiscountPercent / 100);
+  return parseFloat(final.toFixed(2));
+}
