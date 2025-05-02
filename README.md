@@ -26,15 +26,17 @@ https://anatoly-karpovich.github.io/demo-login-form/
 
 ### 🐞 Known Issues
 
+---
+
 ❗️ **Password**: validation for uppercase letters is missing  
 - Password like `"lowercase123"` is accepted  
-- According to requirements, at least one uppercase letter is required  
-- **Cause**: check in `script.js` is commented out:
+- According to the requirements, at least one uppercase letter is required  
+- **Cause**: the check in `script.js` is commented out:
   ```js
   // else if(value == value.toLowerCase()) {
   //     return "Password should contain at least one character in upper case"
   // }
-- Password without uppercase test is intentionally left and marked as [KNOWN ISSUE]
+The test Password without uppercase is intentionally left and marked as [KNOWN ISSUE]
 
 ## ✅ Task_2: REGISTER — demo-registration-form
 
@@ -87,3 +89,65 @@ https://anatoly-karpovich.github.io/demo-login-form/
 
 - `login.spec.ts`
 - `login.spec.ts-snapshots`
+
+## ✅ Task 5: REGISTER (DDT) — demo-login-form
+
+### 📄 Description
+
+Создать тест сьют используя DDT подход с негативными тест-кейсами по регистрации на сайте
+https://anatoly-karpovich.github.io/demo-login-form/
+
+#### Requirements:
+Same as in Task 1
+
+### 📁 File structure
+
+- `src/data/demo-login-form/negative-test-data.ts` — contains only test data
+- `src/types/demo-login-form/negative-test-types.ts` — contains interface `NegativeTestCase`
+- `src/ui/tests/demo-login-form/ddt-registration.spec.ts` — DDT logic with negative test cases
+- `src/ui/tests/demo-login-form/input-limit.spec.ts` — UI input field limitation tests
+
+### 🐞 Known Issues
+
+---
+
+❗️ **Password**: validation for uppercase letters is missing  
+- Password like `"lowercase123"` is accepted  
+- According to the requirements, at least one uppercase letter is required  
+- **Cause**: the check in `script.js` is commented out:
+  ```js
+  // else if(value == value.toLowerCase()) {
+  //     return "Password should contain at least one character in upper case"
+  // }
+The test Password without uppercase is intentionally left and marked as [KNOWN ISSUE]
+
+❗️ UI message typo: "is username"
+
+The validation message shown when the username contains spaces is grammatically incorrect:
+Prefix and postfix spaces are not allowed is username
+✅ Should be: Prefix and postfix spaces are not allowed in username
+Affects tests:
+1. Username with leading/trailing spaces
+2. Username with only spaces
+
+## ✅ Task 6: Demo Shopping Cart UI Tests
+
+### 📄 Description
+
+Разработать тест со следующими шагами:
+https://anatoly-karpovich.github.io/demo-shopping-cart/
+  - добавить продукты 2,4,6,8,10
+  - завалидировать бейдж с количеством
+  - открыть чекаут
+  - завалидировать сумму и продукты
+  - ввести все найденные вами промокоды (вспоминаем первую лекцию)
+  - завалидировать конечную сумму
+  - зачекаутиться
+  - завалидировать сумму
+
+### 📁 File structure
+
+- `src/data/demo-shopping-card/products.ts` — contains list of products with names and prices
+- `src/data/demo-shopping-card/promocodes.ts` — contains list of all promo codes
+- `src/types/demo-shopping-card/product-types.ts` — defines Product type with name and price
+- `src/ui/tests/demo-shopping-card/checkout.spec.ts` — full E2E test
