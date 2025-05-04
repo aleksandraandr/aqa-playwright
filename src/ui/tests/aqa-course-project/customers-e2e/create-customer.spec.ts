@@ -31,6 +31,11 @@ test.describe('[UI] [Sales Portal] [Customers] [E2E]', () => {
     await customersPage.waitForOpened();
     await customersPage.waitForNotification(NOTIFICATIONS.CUSTOMER_CREATED);
 
-    await customersPage.validateCustomerData(data);
+    // Валидация созданного клиента через метод customers.page
+    const createdCustomer = await customersPage.getCreatedCustomerData();
+
+    expect(createdCustomer.Email).toBe(data.email);
+    expect(createdCustomer.Name).toBe(data.name);
+    expect(createdCustomer.Country).toBe(data.country);
   });
 });

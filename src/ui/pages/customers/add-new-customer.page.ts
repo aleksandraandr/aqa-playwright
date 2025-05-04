@@ -1,35 +1,20 @@
-import { expect, Locator, Page } from '@playwright/test';
+import { Locator } from '@playwright/test';
 import { ICustomer } from 'types/customer.types';
 import { SalesPortalPage } from 'ui/pages/sales-portal.page';
 
 export class AddNewCustomerPage extends SalesPortalPage {
-  private readonly emailInput: Locator;
-  private readonly nameInput: Locator;
-  private readonly countryInput: Locator;
-  private readonly cityInput: Locator;
-  private readonly streetInput: Locator;
-  private readonly houseInput: Locator;
-  private readonly flatInput: Locator;
-  private readonly phoneInput: Locator;
-  private readonly notesInput: Locator;
-  private readonly saveNewCustomerButton: Locator;
-  public readonly uniqueElement: Locator;
+  readonly emailInput = this.page.locator("#inputEmail");
+  readonly nameInput = this.page.locator("#inputName");
+  readonly countryInput = this.page.locator("#inputCountry");
+  readonly cityInput = this.page.locator("#inputCity");
+  readonly streetInput = this.page.locator("#inputStreet");
+  readonly houseInput = this.page.locator("#inputHouse");
+  readonly flatInput = this.page.locator("#inputFlat");
+  readonly phoneInput = this.page.locator("#inputPhone");
+  readonly notesInput = this.page.locator("#textareaNotes");
+  readonly saveNewCustomerButton = this.page.locator("#save-new-customer");
 
-  constructor(protected page: Page) {
-    super(page);
-    this.emailInput = page.locator('#inputEmail');
-    this.nameInput = page.locator('#inputName');
-    this.countryInput = page.locator('#inputCountry');
-    this.cityInput = page.locator('#inputCity');
-    this.streetInput = page.locator('#inputStreet');
-    this.houseInput = page.locator('#inputHouse');
-    this.flatInput = page.locator('#inputFlat');
-    this.phoneInput = page.locator('#inputPhone');
-    this.notesInput = page.locator('#textareaNotes');
-    this.saveNewCustomerButton = page.locator('#save-new-customer');
-
-    this.uniqueElement = this.emailInput;
-  }
+  readonly uniqueElement = this.saveNewCustomerButton;
 
   public async fillInputs(customer: Partial<ICustomer>) {
     if (customer.email) await this.emailInput.fill(customer.email);

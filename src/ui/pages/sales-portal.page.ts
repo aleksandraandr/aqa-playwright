@@ -2,8 +2,8 @@ import { expect, Locator, Page } from '@playwright/test';
 import { NOTIFICATIONS } from 'data/notifications.data';
 
 export abstract class SalesPortalPage {
-  protected readonly spinner: Locator;
-  protected readonly notification: Locator;
+  readonly spinner: Locator;
+  readonly notification: Locator;
   public abstract readonly uniqueElement: Locator;
   
   constructor(protected page: Page) {
