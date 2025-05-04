@@ -151,3 +151,43 @@ https://anatoly-karpovich.github.io/demo-shopping-cart/
 - `src/data/demo-shopping-card/promocodes.ts` — contains list of all promo codes
 - `src/types/demo-shopping-card/product-types.ts` — defines Product type with name and price
 - `src/ui/tests/demo-shopping-card/checkout.spec.ts` — full E2E test
+
+## ✅ Task 7: Page Object класс для страницы Sign In
+
+### 📄 Description
+
+Написать Page Object класс для страницы Sign In:
+  - email input
+  - password input
+  - login button
+  - fillCredentials method
+  - click on login button method
+
+### 📁 File structure
+
+- `src/ui/pages/sign-in.page.ts` — contains Page Object for Sign In
+
+## ✅ Task 8: Create customer with valid data and verify table entry
+
+### 📄 Description
+
+Разработать е2е тест со следующими шагами:
+ - Открыть url https://anatoly-karpovich.github.io/aqa-course-project/#
+ - Войти в приложения используя ваши учетные данные 
+ - Создать покупателя (модуль Customers)
+ - Верифицировать появившуюся нотификацию
+ - Верифицировать созданного покупателя в таблице (сравнить все имеющиеся поля, покупатель должен быть самым верхним)
+
+### 📁 File structure
+
+- `src/ui/pages/customers/add-new-customer.page.ts` — contains Page Object for the 'Add New Customer' form with methods for filling and submitting customer data 
+- `src/ui/pages/customers/customers.page.ts` — contains Page Object for the customer list page and methods to interact with the customer table and notifications 
+- `src/ui/pages/home.page.ts` — contains Page Object for the homepage with navigation to different modules like Customers, Products, and Orders 
+- `src/ui/pages/sales-portal.page.ts` — contains a base abstract class for all page objects with common logic
+- `src/data/customers/countries.ts` — contains an enum with available customer countries
+- `src/data/customers/generate-customer.data.ts` — contains a function that generates randomized customer test data
+- `src/types/customers/customers.types.ts` — defines the `ICustomer` interface used for typing customer data
+- `src/types/customers/home.types.ts` — defines the `ModuleName` type representing main sections of the portal
+- `src/ui/tests/aqa-course-project/customers-e2e/create-customer.spec.ts` — contains an end-to-end test that verifies the customer creation workflow
+- `src/utils/enum.utils.ts` — contains a utility function to retrieve a random value from an enum
+
