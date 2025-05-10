@@ -41,7 +41,7 @@ test.describe('[UI] [Sales Portal] [Customers]', () => {
     
     // Ensure customer is no longer in the table
     await customersPage.waitForOpened();
-    const stillExists = await customersPage.isCustomerInTable(data.email);
-    expect(stillExists).toBe(false);
+    const isExists = await customersPage.isCustomerInTable(data.email);
+    expect(isExists).toBe(false);
   });
 });

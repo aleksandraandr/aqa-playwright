@@ -2,11 +2,13 @@ import { test as base } from '@playwright/test';
 import { AddNewCustomerPage } from 'ui/pages/customers/add-new-customer.page';
 import { CustomersPage } from 'ui/pages/customers/customers.page';
 import { HomePage } from 'ui/pages/home.page';
+import { SignInPage } from 'ui/pages/sign-in.page';
 
 interface ISalesPortalPages {
   homePage: HomePage;
   customersPage: CustomersPage;
   addNewCustomerPage: AddNewCustomerPage;
+  signInPage: SignInPage;
 }
 
 export const test = base.extend<ISalesPortalPages>({
@@ -18,6 +20,9 @@ export const test = base.extend<ISalesPortalPages>({
   },
   addNewCustomerPage: async ({ page }, use) => {
     await use(new AddNewCustomerPage(page));
+  },
+  signInPage: async ({ page }, use) => {
+    await use(new SignInPage(page));
   },
 });
 

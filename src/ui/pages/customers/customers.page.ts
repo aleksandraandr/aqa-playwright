@@ -2,11 +2,11 @@ import { SalesPortalPage } from 'ui/pages/sales-portal.page';
 import { COUNTRIES } from 'data/customers/countries.data';
 import { ICustomer, ICustomerInTable } from 'types/customers/customers.types';
 import { FilterModal } from 'ui/pages/modals/customers/filter.modal';
-import { DeleteCustomerModal } from 'ui/pages/modals/customers/delete-customer-modal.page'; // ✅ Добавлено
+import { DeleteCustomerModal } from 'ui/pages/modals/customers/delete-customer-modal.page';
 
 export class CustomersPage extends SalesPortalPage {
   readonly filterModal = new FilterModal(this.page);
-  readonly deleteModal = new DeleteCustomerModal(this.page); // ✅ Добавлено
+  readonly deleteModal = new DeleteCustomerModal(this.page);
 
   readonly addNewCustomerButton = this.page.getByRole('button', { name: 'Add Customer' });
 
@@ -25,6 +25,7 @@ export class CustomersPage extends SalesPortalPage {
   readonly nameCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(2);
   readonly countryCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(3);
   readonly createdOnCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(4);
+  
   readonly editButton = (email: string) => this.tableRowByEmail(email).getByTitle('Edit');
   readonly detailsButton = (email: string) => this.tableRowByEmail(email).getByTitle('Details');
   readonly deleteButton = (email: string) => this.tableRowByEmail(email).getByTitle('Delete');
@@ -37,11 +38,6 @@ export class CustomersPage extends SalesPortalPage {
 
   async clickDeleteCustomer(customerEmail: string) {
     await this.deleteButton(customerEmail).click();
-    await this.deleteModal.waitForOpened(); // ✅ Убедиться, что модалка открылась
-  }
-
-  async confirmCustomerDeletion() {
-    await this.deleteModal.confirmDeletion(); // ✅ Подтверждение через модалку
   }
 
   async clickFilter() {
@@ -68,7 +64,7 @@ export class CustomersPage extends SalesPortalPage {
     };
   }
 
-  async getTabeData() {
+  async getTableData() {
     const tableData: Array<ICustomerInTable> = [];
 
     const rows = await this.tableRow.all();
@@ -86,6 +82,11 @@ export class CustomersPage extends SalesPortalPage {
   
   async isCustomerInTable(email: string): Promise<boolean> {
     return await this.tableRowByEmail(email).count() > 0;
+  }
+
+  async confirmCustomerDeletion() {
+    await this.deleteModal.clickDelete();
+    await this.deleteModal.waitForClosed();
   }
 }
 
