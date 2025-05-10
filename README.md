@@ -191,3 +191,34 @@ https://anatoly-karpovich.github.io/demo-shopping-cart/
 - `src/ui/tests/aqa-course-project/customers-e2e/create-customer.spec.ts` — contains an end-to-end test that verifies the customer creation workflow
 - `src/utils/enum.utils.ts` — contains a utility function to retrieve a random value from an enum
 
+## ✅ Task 9: Create and delete customer, and verify table entry
+
+### 📄 Description
+
+Создайте e2e тест со следующими шагами:
+1. Зайти на сайт Sales Portal
+2. Залогиниться с вашими кредами
+3. Перейти на страницу Customers List
+4. Перейти на станицу Add New Customer
+5. Создать покупателя
+6. Проверить наличие покупателя в таблице
+7. Кликнуть на кнопку "Delete" в таблице для созданного покупателя
+8. В модалке удаления кликнуть кнопку Yes, Delete
+9. Дождаться исчезновения модалки и загрузки страницы
+10. Проверить, что покупатель отсутствует в таблице
+
+Вам понадобится:
+
+- PageObject модалки удаления покупателя
+- Подключить модалку в PageObject страницы Customers
+- Использовать фикстуры
+
+### 📁 File structure
+
+- `src/config/environment.ts` — loads and exports environment variables such as login credentials and base URL 
+- `src/fixtures/pages.fixtures.ts` — defines page-related Playwright fixtures (homePage, customersPage, addNewCustomerPage)
+- `src/fixtures/business-steps.fixtures.ts` — defines reusable business logic fixtures, including loginAsLocalUser()
+- `src/ui/pages/modals/customers/modal.page.ts` — abstract base class for common modal behaviors like waitForClosed
+- `src/ui/pages/modals/customers/filter.modal.ts` — contains Page Object for the 'Filter Customers' modal with checkbox selection and modal buttons
+- `src/ui/pages/modals/customers/delete-customer-modal.page.ts` — contains Page Object for the 'Delete Customer' confirmation modal
+- `src/ui/tests/aqa-course-project/customers-e2e/create-and-delete-customer.spec.ts` — contains E2E test that creates and deletes a customer, validating table presence and absence

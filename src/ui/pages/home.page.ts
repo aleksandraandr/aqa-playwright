@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test';
-import { ModuleName } from 'types/home.types';
+import { ModuleName } from 'types/customers/home.types';
 import { SalesPortalPage } from 'ui/pages/sales-portal.page';
 
 export class HomePage extends SalesPortalPage {
