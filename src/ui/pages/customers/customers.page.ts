@@ -1,32 +1,104 @@
-import { Locator, expect } from '@playwright/test';
 import { SalesPortalPage } from 'ui/pages/sales-portal.page';
-import { ICustomer } from 'types/customer.types';
+import { COUNTRIES } from 'data/customers/countries.data';
+import { ICustomer, ICustomerInTable } from 'types/customers/customers.types';
+import { FilterModal } from 'ui/pages/modals/customers/filter.modal';
+import { DeleteCustomerModal } from 'ui/pages/modals/customers/delete-customer-modal.page';
 
 export class CustomersPage extends SalesPortalPage {
-  readonly addNewCustomerButton = this.page.getByRole("button", { name: "Add Customer" });
+  readonly filterModal = new FilterModal(this.page);
+  readonly deleteModal = new DeleteCustomerModal(this.page);
+
+  readonly addNewCustomerButton = this.page.getByRole('button', { name: 'Add Customer' });
+
+  readonly filterButton = this.page.getByRole('button', { name: 'Filter' });
+
+  readonly tableHeader = this.page.locator('#table-customers th div');
+  readonly emailHeader = this.tableHeader.filter({ hasText: 'Email' });
+  readonly nameHeader = this.tableHeader.filter({ hasText: 'Name' });
+  readonly countryHeader = this.tableHeader.filter({ hasText: 'Country' });
+  readonly createdOnHeader = this.tableHeader.filter({ hasText: 'Created On' });
+
+  readonly tableRow = this.page.locator('#table-customers tbody tr');
+  readonly tableRowByEmail = (email: string) => this.tableRow.filter({ has: this.page.getByText(email) });
+
+  readonly emailCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(1);
+  readonly nameCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(2);
+  readonly countryCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(3);
+  readonly createdOnCell = (email: string) => this.tableRowByEmail(email).locator('td').nth(4);
+  
+  readonly editButton = (email: string) => this.tableRowByEmail(email).getByTitle('Edit');
+  readonly detailsButton = (email: string) => this.tableRowByEmail(email).getByTitle('Details');
+  readonly deleteButton = (email: string) => this.tableRowByEmail(email).getByTitle('Delete');
+
   readonly uniqueElement = this.addNewCustomerButton;
 
-  public async clickAddNewCustomer() {
+  async clickAddNewCustomer() {
     await this.addNewCustomerButton.click();
-    await this.page.locator("#inputEmail").waitFor({ state: "visible", timeout: 5000 });
   }
 
-  public async waitForNotification(text: string) {
-    await expect(this.notification).toContainText(text);
+  async clickDeleteCustomer(customerEmail: string) {
+    await this.deleteButton(customerEmail).click();
   }
 
-  public async getCreatedCustomerData(): Promise<Record<string, string>> {
-    const table = this.page.locator('.table');
-    const headers = (await table.locator('thead th').allInnerTexts()).map(h => h.trim());
-    const cells = (await table.locator('tbody tr').first().locator('td').allInnerTexts()).map(c => c.trim());
+  async clickFilter() {
+    await this.filterButton.click();
+  }
 
-    const data: Record<string, string> = {};
-    headers.forEach((header, index) => {
-      data[header] = cells[index] ?? '';
-    });
+  async clickTableAction(customerEmail: string, action: 'edit' | 'details' | 'delete') {
+    const buttons = {
+      edit: this.editButton(customerEmail),
+      details: this.detailsButton(customerEmail),
+      delete: this.deleteButton(customerEmail),
+    };
 
-    return data;
+    await buttons[action].click();
+  }
+
+  async getCustomerData(customerEmail: string): Promise<ICustomerInTable> {
+    const [email, name, country, createdOn] = await this.tableRowByEmail(customerEmail).locator('td').allInnerTexts();
+    return {
+      email,
+      name,
+      country: country as COUNTRIES,
+      //createdOn
+    };
+  }
+
+  async getTableData() {
+    const tableData: Array<ICustomerInTable> = [];
+
+    const rows = await this.tableRow.all();
+    for (const row of rows) {
+      const [email, name, country, createdOn] = await row.locator('td').allInnerTexts();
+      tableData.push({
+        email,
+        name,
+        country: country as COUNTRIES,
+        //createdOn
+      });
+    }
+    return tableData;
+  }
+  
+  async isCustomerInTable(email: string): Promise<boolean> {
+    return await this.tableRowByEmail(email).count() > 0;
+  }
+
+  async confirmCustomerDeletion() {
+    await this.deleteModal.clickDelete();
+    await this.deleteModal.waitForClosed();
   }
 }
+
+
+
+
+
+
+
+
+
+
+
 
 

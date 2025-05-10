@@ -1,18 +1,18 @@
 import { Locator } from '@playwright/test';
-import { ICustomer } from 'types/customer.types';
+import { ICustomer } from 'types/customers/customers.types';
 import { SalesPortalPage } from 'ui/pages/sales-portal.page';
 
 export class AddNewCustomerPage extends SalesPortalPage {
-  readonly emailInput = this.page.locator("#inputEmail");
-  readonly nameInput = this.page.locator("#inputName");
-  readonly countryInput = this.page.locator("#inputCountry");
-  readonly cityInput = this.page.locator("#inputCity");
-  readonly streetInput = this.page.locator("#inputStreet");
-  readonly houseInput = this.page.locator("#inputHouse");
-  readonly flatInput = this.page.locator("#inputFlat");
-  readonly phoneInput = this.page.locator("#inputPhone");
-  readonly notesInput = this.page.locator("#textareaNotes");
-  readonly saveNewCustomerButton = this.page.locator("#save-new-customer");
+  readonly emailInput = this.page.locator('#inputEmail');
+  readonly nameInput = this.page.locator('#inputName');
+  readonly countryInput = this.page.locator('#inputCountry');
+  readonly cityInput = this.page.locator('#inputCity');
+  readonly streetInput = this.page.locator('#inputStreet');
+  readonly houseInput = this.page.locator('#inputHouse');
+  readonly flatInput = this.page.locator('#inputFlat');
+  readonly phoneInput = this.page.locator('#inputPhone');
+  readonly notesInput = this.page.locator('#textareaNotes');
+  readonly saveNewCustomerButton = this.page.locator('#save-new-customer');
 
   readonly uniqueElement = this.saveNewCustomerButton;
 
