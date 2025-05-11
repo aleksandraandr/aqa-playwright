@@ -222,3 +222,38 @@ https://anatoly-karpovich.github.io/demo-shopping-cart/
 - `src/ui/pages/modals/customers/filter.modal.ts` — contains Page Object for the 'Filter Customers' modal with checkbox selection and modal buttons
 - `src/ui/pages/modals/customers/delete-customer-modal.page.ts` — contains Page Object for the 'Delete Customer' confirmation modal
 - `src/ui/tests/aqa-course-project/customers-e2e/create-and-delete-customer.spec.ts` — contains E2E test that creates and deletes a customer, validating table presence and absence
+
+## ✅ Task 10: API test - login
+
+### 📄 Description
+
+Написать смоук API тест на логин
+  - создать и проверить схему
+  - проверить статус
+  - проверить наличие токена в хедерах
+
+### 📁 File structure
+
+- `src/config/api-config.ts` — contains base URL and API endpoint definitions used throughout the tests
+- `src/data/schemas/login.schema.ts` — defines the JSON schema for validating login API responses
+- `src/data/status.codes.ts` — provides a centralized list of HTTP status codes for cleaner and more consistent assertions
+- `src/utils/validations/schema-validation.ts` — utility for validating API responses against predefined JSON schemas using AJV
+- `src/api/tests/login.spec.ts` — contains API tests for the login functionality, including status code and response structure validation
+
+## ✅ Task 11: API test - Create a customer and find it in the customers list
+
+### 📄 Description
+
+Написать смоук API тест на получение всех кастомеров (без фильтрационных параметров) со следующими шагами:
+  - Залогиниться
+  - Создать кастомера и проверить 200й статус
+  - Получить всех кастомеров
+  - создать и проверить схему
+  - проверить статус
+  - проверить, что в массиве тела респонса есть созданный кастомер
+  - Проверить поля IsSuccess и ErrorMessage
+
+### 📁 File structure
+
+- `src/data/schemas/customers/customers-list.schema.ts` — defines the JSON schema for validating the response structure of the 'get all customers' API endpoint
+- `src/api/tests/customers/get-all-customers.spec.ts` — contains the smoke test that verifies customer creation and retrieval through the 'get all customers' API, including schema validation and field-level checks
