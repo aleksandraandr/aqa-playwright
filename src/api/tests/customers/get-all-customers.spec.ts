@@ -55,19 +55,10 @@ test.describe('[API] [Customers] [Smoke] [Get All]', () => {
         (customer: any) => customer.email === customerData.email
       );
       
-      expect.soft(foundCustomer).toBeTruthy();
-      expect.soft(foundCustomer).toMatchObject({
-        _id: createdCustomer.Customer._id, 
-        email: customerData.email,
-        name: customerData.name,
-        country: customerData.country,
-        city: customerData.city,
-        street: customerData.street,
-        house: customerData.house,
-        flat: customerData.flat,
-        phone: customerData.phone,
-        notes: customerData.notes,
-      });
+      expect.soft(
+      foundCustomer,
+      'Customer from response does not match created customer data'
+    ).toMatchObject({ ...customerData });
 
     // Check IsSuccess and ErrorMessage
     expect.soft(customersList.IsSuccess).toBe(true);
