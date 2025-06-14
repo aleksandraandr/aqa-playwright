@@ -257,3 +257,48 @@ https://anatoly-karpovich.github.io/demo-shopping-cart/
 
 - `src/data/schemas/customers/customers-list.schema.ts` — defines the JSON schema for validating the response structure of the 'get all customers' API endpoint
 - `src/api/tests/customers/get-all-customers.spec.ts` — contains the smoke test that verifies customer creation and retrieval through the 'get all customers' API, including schema validation and field-level checks
+
+## ✅ Task 12: Create and use SignInController
+
+### 📄 Description
+
+Реализовать SignInController по аналогии с CustomersController и использовать его во всех уже написанных АПИ тестах
+
+### 📁 File structure
+
+- `src/api/api-clients/request.ts` — defines a reusable HTTP client (RequestApi) built on top of Playwright’s request context for sending typed API requests with method, headers, and body
+- `src/api/controllers/customer.controllers.ts` — encapsulates customer-related API logic (CRUD operations) and communicates with backend endpoints via RequestApi
+- `src/api/controllers/signin.controller.ts` — handles login requests and extracts the authorization token used for authenticated API calls
+- `src/data/schemas/customers/customers-list.schema.ts` — defines the JSON schema for validating the response structure of the "get all customers" API endpoint
+- `src/types/customers.types.ts` — declares TypeScript interfaces and types for customer request and response data models
+- `src/types/api.types.ts` — defines shared base interfaces for standardized API responses (e.g. status, headers, and response body)
+- `src/types/sign-in.types.ts` — provides interfaces for login credentials and expected login response payload
+- `src/utils/validations/request-params.ts` — exports a utility (convertRequestParams) that formats query parameters into a valid URL string for GET requests
+
+## ✅ Task 13: Create test suite for verifying a "create customer" endpoint using the DDT approach (Data-Driven Testing) - positive and nefative checks
+
+### 📄 Description
+
+Используя DDT подход, напишите тест сьют для проверки эндпоинта создания покупателя:
+  - с позитивными проверками
+  - с негативными проверками
+
+  Используйте SignInConroller, CustomersController, после каждого теста, где создастся кастомер - удаляйте его.
+
+  Требования:
+  Email: обязательное, уникальный
+  Name: обязательное, Customer's name should contain only 1-40 alphabetical characters and one space between
+  Country: обязательное, ['USA', 'Canada', 'Belarus', 'Ukraine', 'Germany', 'France', 'Great Britain', 'Russia']
+  City: обязательное, City's name should contain only 1-20 alphabetical characters and one space between
+  Street: обязательное, Street should contain only 1-40 alphanumerical characters and one space between
+  House: обязательное, House number should be in range 1-999
+  Flat: обязательное, Flat number should be in range 1-9999
+  Phone: обязательное, Mobile Number should be at least 10 characters (max 20) and start with a +
+  Notes: Notes should be in range 0-250 and without < or > symbols
+
+### 📁 File structure
+
+- `src/fixtures/controllers.fixture.ts` - custom Playwright fixtures for injecting API controllers into tests
+- `src/api/tests/customers/create-customer.spec.ts' - DDT test suite with both positive and negative test cases for creating a customer
+- `src/data/customers/valid-customer.data.ts` - static dataset of valid customer test cases used for DDT positive testing
+- `src/data/customers/invalid-customer.data.ts` - static dataset of invalid customer test cases used for DDT negative testing
